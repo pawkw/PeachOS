@@ -4,7 +4,7 @@ all: ./bin/boot.bin ./bin/kernel.bin
 	rm -rvf ./bin/os.bin
 	dd if=./bin/boot.bin >> ./bin/os.bin
 	dd if=./bin/kernel.bin >> ./bin/os.bin
-	dd if=/dev/zero bs=512 count 10 >> .bin/os.bin
+	dd if=/dev/zero bs=512 count=100 >> ./bin/os.bin
 
 ./bin/kernel.bin: $(FILES)
 	i686-elf-ld -g -relocatable $(FILES) -o ./build/kernelfull.o
@@ -18,3 +18,6 @@ all: ./bin/boot.bin ./bin/kernel.bin
 
 clean:
 	rm -rvf ./bin/*
+	rm -rvf $(FILES)
+	rm -rvf ./build/kernelfull.o
+	
