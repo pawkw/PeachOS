@@ -28,13 +28,14 @@ start:
     mov sp, 0x7c00
     sti
 
-.load_protected:
+;; Load global descriptor
     cli
     lgdt [gdt_descriptor]
     mov eax, cr0
     or eax, 0x1
-    mov cr0, eax
-    jmp CODE_SEG:load32
+    mov cr0, eax ; Switch to 32 bit mode
+    ;; jmp CODE_SEG:load32
+    jmp $
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GDT - Global Descriptor Table
@@ -69,23 +70,9 @@ gdt_descriptor:
     dw gdt_end - gdt_start - 1
     dd gdt_start
 
-[BITS 32]
-load32:
-    mov ax, DATA_SEG
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax 
-    mov ss, ax
-    mov ebp, 0x00200000
-    mov esp, ebp
-    jmp $
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; End of file
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 times 510-($-$$) db 0 ; Fill remaining space with 0
 dw 0xAA55
-
-buffer:
