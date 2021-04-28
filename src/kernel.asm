@@ -24,3 +24,6 @@ _start:
     or al, 2
     out 0x92, al
     jmp $
+
+;; Fill end of file to 512 byte boundry
+times 512-($ - $$) db 0
