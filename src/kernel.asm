@@ -1,5 +1,6 @@
 [BITS 32]
 global _start
+extern kernel_main
 
 CODE_SEG equ 0x08
 DATA_SEG equ 0x10
@@ -23,6 +24,13 @@ _start:
     in al, 0x92
     or al, 2
     out 0x92, al
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Call the C kernel
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+    call kernel_start
+
     jmp $
 
 ;; Fill end of file to 512 byte boundry
