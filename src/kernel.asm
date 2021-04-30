@@ -29,7 +29,7 @@ _start:
 ;; Call the C kernel
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-    call kernel_start
+    call kernel_main
 
     jmp $
 
