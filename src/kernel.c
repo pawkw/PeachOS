@@ -1,6 +1,7 @@
-#include "kernel.h"
 #include <stdint.h>
 #include <stddef.h>
+#include "kernel.h"
+#include "idt/idt.h"
 
 uint16_t* video_mem = 0;
 uint16_t terminal_row = 0;
@@ -17,7 +18,7 @@ uint16_t terminal_make_char(char c, char colour) {
 }
 
 char terminal_make_colour(char fg, char bg) {
-    return (bg << 3) | fg;
+    return (bg << 4) | fg;
 }
 
 void terminal_putchar(int x, int y, char c, char colour) {
@@ -30,7 +31,16 @@ void terminal_writechar(char c, char colour) {
         terminal_col = 0;
         return;
     }
-    
+    if(c == '\t')
+    {
+        terminal_row += 4;
+        if(terminal_col >= VGA_WIDTH) {
+            terminal_col = 0;
+            terminal_row += 1;
+        }
+        return;
+    }
+
     terminal_putchar(terminal_col, terminal_row, c, colour);
     terminal_col += 1;
     if(terminal_col >= VGA_WIDTH) {
@@ -39,10 +49,18 @@ void terminal_writechar(char c, char colour) {
     }
 }
 
-void terminal_writestr(char string[], char colour) {
+void display_colour(char string[], char fg_colour, char bg_colour) {
     int l = strlen(string);
+    char colour = terminal_make_colour(fg_colour, bg_colour);
     for(int i = 0; i < l; i++) {
         terminal_writechar(string[i], colour);
+    }
+}
+
+void display(char string[]) {
+    int l = strlen(string);
+    for(int i = 0; i < l; i++) {
+        terminal_writechar(string[i], terminal_make_colour(DEFAULT_FG, DEFAULT_BG));
     }
 }
 
@@ -58,13 +76,14 @@ void terminal_initialize() {
         }
         
     }
-
 }
 
 void kernel_main() {
     char string[] = "Welcome to Agree JOS\nby Peter Weston";
     
     terminal_initialize();
-    terminal_writestr(string, terminal_make_colour(DEFAULT_FG, DEFAULT_BG));
-    // display(video_mem, string, 10, 40 - (len(string)>>1), 8, 15);
+    display(string);
+    
+    // Initialize the interrupt descriptor table.
+    idt_init();
 }
