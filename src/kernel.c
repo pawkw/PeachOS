@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include "kernel.h"
 #include "idt/idt.h"
+#include "io/io.h"
 
 uint16_t* video_mem = 0;
 uint16_t terminal_row = 0;

@@ -1,6 +1,7 @@
 #ifndef KERNEL_H
 #define KERNEL_H
 
+// Colours used by terminal
 enum {
     BLACK,
     BLUE,

@@ -10,7 +10,7 @@ struct idtr_desc idtr_descriptor;
 extern void idt_load(struct idtr_desc* ptr);
 
 void idt_zero() {
-    display_colour("Divide by zero error.", 15, DEFAULT_BG);
+    display_colour("Divide by zero error.", RED, DEFAULT_BG);
 }
 
 void idt_set(int interrupt_number, void* address) {
