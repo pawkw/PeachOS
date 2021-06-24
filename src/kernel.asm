@@ -27,9 +27,25 @@ _start:
     out 0x92, al
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Set up interrupt controller
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+    ; The hardware IRQs get mapped to ISR 0x20
+    mov al, 00010001b
+    out 0x20, al
+
+    mov al, 0x20 ; 0x20 is where ISR should start
+    out 0x21, al
+
+    mov al, 00000001b
+    out 0x21, al
+    ; End remap of PIC
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Call the C kernel
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+    sti ; Enable interrupts
     call kernel_main
 
     jmp $

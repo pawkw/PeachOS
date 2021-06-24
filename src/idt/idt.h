@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define int_acknowledge outb(0x20, 0x20)
+
 // Iterrupt descriptor table.
 // https://wiki.osdev.org/Interrupt_Descriptor_Table
 struct idt_desc

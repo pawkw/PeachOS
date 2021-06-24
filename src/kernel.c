@@ -80,11 +80,13 @@ void terminal_initialize() {
 }
 
 void kernel_main() {
-    char string[] = "Welcome to Agree JOS\nby Peter Weston";
+    char string[] = "Welcome to Agree JOS\nby Peter Weston\n";
     
     terminal_initialize();
     display(string);
     
     // Initialize the interrupt descriptor table.
     idt_init();
+
+
 }
